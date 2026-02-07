@@ -7,7 +7,7 @@ SehatSetu is a comprehensive healthcare platform that connects patients with doc
 - **Frontend**: Next.js (React)
 - **Backend (API)**: Next.js API Routes
 - **ML Service**: Python (FastAPI, scikit-learn, spacy)
-- **Database**: MongoDB (assumed based on context)
+- **Database**: MongoDB
 
 ## Prerequisites
 
