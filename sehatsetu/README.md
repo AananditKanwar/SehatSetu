@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SehatSetu
 
-## Getting Started
+SehatSetu is a comprehensive healthcare platform that connects patients with doctors and provides AI-driven preliminary diagnosis and specialist recommendations.
 
-First, run the development server:
+## Tech Stack
+
+- **Frontend**: Next.js (React)
+- **Backend (API)**: Next.js API Routes
+- **ML Service**: Python (FastAPI, scikit-learn, spacy)
+- **Database**: MongoDB (assumed based on context)
+
+## Prerequisites
+
+- Node.js (v18 or higher)
+- Python (v3.9 or higher)
+- MongoDB running locally or a connection string
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/AananditKanwar/SehatSetu.git
+cd SehatSetu
+```
+
+### 2. Frontend Setup
+
+Install the Node.js dependencies:
+
+```bash
+cd sehatsetu
+npm install
+```
+
+Start the Next.js development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The frontend will be available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### 3. Python Service Setup (ML Engine)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Python service handles symptom extraction and disease prediction.
 
-## Learn More
+Open a new terminal and navigate to the `python_service` directory:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+cd python_service
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Create a virtual environment:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-## Deploy on Vercel
+Install the Python dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+pip install -r requirements.txt
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Note:** The machine learning models (`disease_model.pkl`, `disease_encoder.pkl`, `symptoms_list.pkl`) must be present in `sehatsetu/python_service/models/`. If they are not in the repository (due to size limits), ensure you have obtained them and placed them in this directory.
+
+Start the Python service:
+
+```bash
+uvicorn app:app --reload --port 8000
+```
+
+The service will be available at [http://localhost:8000](http://localhost:8000).
+
+### 4. Running the Full Application
+
+1.  Ensure MongoDB is running.
+2.  Start the **Python Service** (Terminal 1).
+3.  Start the **Next.js Frontend** (Terminal 2).
+4.  Open your browser and navigate to `http://localhost:3000`.
+
+## Features
+
+- **Patient Intake Form**: Users can describe their symptoms in natural language.
+- **AI Symptom Extraction**: Uses NLP to extract clinical symptoms from text.
+- **Disease Prediction**: Predicts potential conditions based on symptoms.
+- **Specialist Recommendation**: Recommends the top 3 specialist types (e.g., Cardiologist, Dermatologist) for the predicted conditions.
