@@ -64,11 +64,19 @@ Install the Python dependencies:
 pip install -r requirements.txt
 ```
 
-**Note:** The machine learning models (`disease_model.pkl`, `disease_encoder.pkl`, `symptoms_list.pkl`) must be present in `sehatsetu/python_service/models/`. If they are not in the repository (due to size limits), ensure you have obtained them and placed them in this directory.
+**Note:** The machine learning models (`disease_model.pkl`, `disease_encoder.pkl`, `symptoms_list.pkl`) must be present in `sehatsetu/python_service/models/`. You can download them from here: **[Download Models (Google Drive Link)](https://drive.google.com/drive/folders/1Tm0pVEnAdh50hFiwAHWcg9OlSa9CpRFn?usp=sharing)**.
 
-Start the Python service:
+Start the Python service using the convenience script (handles virtual environment activation automatically):
 
 ```bash
+npm run python-service
+```
+    
+Alternatively, you can run it manually:
+
+```bash
+cd python_service
+source venv/bin/activate
 uvicorn app:app --reload --port 8000
 ```
 
