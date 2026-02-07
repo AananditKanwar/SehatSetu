@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "python-service": "cd python_service && ./venv/bin/uvicorn app:app --reload"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

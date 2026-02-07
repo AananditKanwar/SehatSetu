@@ -6,8 +6,19 @@ export async function POST(req) {
   try {
     await connectDB();
 
-    const { userId, fullName, dob, gender, contact, email, symptoms, department } =
-      await req.json();
+    const {
+      userId,
+      fullName,
+      dob,
+      gender,
+      contact,
+      email,
+      symptoms,
+      department,
+      predictedDisease,
+      predictionConfidence,
+      extractedSymptoms
+    } = await req.json();
 
     // Validation
     if (!userId || !fullName || !dob || !gender || !contact || !symptoms || !department) {
@@ -27,6 +38,9 @@ export async function POST(req) {
       email,
       symptoms,
       department,
+      predictedDisease,
+      predictionConfidence,
+      extractedSymptoms
     });
 
     return NextResponse.json(

@@ -52,17 +52,17 @@ export default function RegisterPage() {
   };
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
-      display: "flex", 
-      alignItems: "center", 
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      alignItems: "center",
       justifyContent: "center",
       padding: "1.5rem",
       background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
     }}>
       <div className="card" style={{ maxWidth: "450px", width: "100%", animation: "fadeIn 0.5s ease-out" }}>
         {/* Header */}
-        <div style={{ textAlign: "center", marginBottom: "2rem" }}
+        <div style={{ textAlign: "center", marginBottom: "2rem" }}>
           <h1 style={{ fontSize: "1.75rem", marginBottom: "0.5rem" }}>Create Account</h1>
           <p style={{ color: "#6b7280" }}>Join Sehat Setu and start your health journey</p>
         </div>
@@ -146,11 +146,11 @@ export default function RegisterPage() {
         </p>
 
         {/* Back Link */}
-        <Link 
-          href="/" 
-          style={{ 
-            textAlign: "center", 
-            color: "#6b7280", 
+        <Link
+          href="/"
+          style={{
+            textAlign: "center",
+            color: "#6b7280",
             fontSize: "0.9rem",
             display: "block"
           }}

@@ -36,6 +36,19 @@ const PatientSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // Prediction results
+    predictedDisease: {
+      type: String,
+      default: null,
+    },
+    predictionConfidence: {
+      type: String, // e.g., "95.5%"
+      default: null,
+    },
+    extractedSymptoms: {
+      type: [String],
+      default: [],
+    },
     // Appointment tracking fields (optional)
     appointmentStatus: {
       type: String,

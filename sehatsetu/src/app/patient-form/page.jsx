@@ -51,6 +51,8 @@ export default function PatientFormPage() {
     }));
   };
 
+  const [prediction, setPrediction] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -70,6 +72,27 @@ export default function PatientFormPage() {
     }
 
     try {
+      // 1. Get Prediction
+      let predictionResult = null;
+      try {
+        const predictResponse = await fetch("/api/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text: formData.symptoms }),
+        });
+
+        if (predictResponse.ok) {
+          predictionResult = await predictResponse.json();
+          setPrediction(predictionResult);
+        } else {
+          console.warn("Prediction API failed, proceeding without prediction");
+        }
+      } catch (predError) {
+        console.error("Prediction error:", predError);
+        // Continue even if prediction fails
+      }
+
+      // 2. Submit Patient Data
       const response = await fetch("/api/patient", {
         method: "POST",
         headers: {
@@ -79,6 +102,9 @@ export default function PatientFormPage() {
         body: JSON.stringify({
           ...formData,
           userId: user?.id,
+          predictedDisease: predictionResult?.disease || null,
+          predictionConfidence: predictionResult?.confidence || null,
+          extractedSymptoms: predictionResult?.extracted_symptoms || []
         }),
       });
 
@@ -90,9 +116,10 @@ export default function PatientFormPage() {
       }
 
       setSubmitted(true);
+      // Wait a bit longer so user can see the prediction before redirect
       setTimeout(() => {
         router.push("/dashboard");
-      }, 2000);
+      }, 5000);
     } catch (err) {
       setError("An error occurred. Please try again.");
       console.error(err);
@@ -118,8 +145,42 @@ export default function PatientFormPage() {
         <div className="card" style={{ textAlign: "center", maxWidth: "400px" }}>
           <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>✅</div>
           <h1 style={{ color: "#10b981", marginBottom: "0.5rem", fontSize: "1.75rem" }}>Success!</h1>
-          <p style={{ color: "#6b7280", marginBottom: "1rem" }}>
-            Your patient information has been submitted successfully. Redirecting to dashboard...
+          <p style={{ color: "#6b7280", marginBottom: "1.5rem" }}>
+            Your details have been submitted.
+          </p>
+
+          {prediction && (
+            <div style={{
+              background: "#ecfdf5",
+              border: "1px solid #10b981",
+              borderRadius: "8px",
+              padding: "1rem",
+              marginBottom: "1.5rem"
+            }}>
+              <h3 style={{ color: "#047857", marginBottom: "0.5rem", fontWeight: "bold" }}>Recommended Specialists</h3>
+
+              {prediction.predictions && prediction.predictions.map((pred, index) => (
+                <div key={index} style={{
+                  marginBottom: index < prediction.predictions.length - 1 ? "1rem" : "0",
+                  paddingBottom: index < prediction.predictions.length - 1 ? "1rem" : "0",
+                  borderBottom: index < prediction.predictions.length - 1 ? "1px solid #a7f3d0" : "none"
+                }}>
+                  <p style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "#065f46" }}>
+                    {index + 1}. {pred.specialist || "General Physician"}
+                  </p>
+                  <p style={{ margin: "0.25rem 0 0 0", fontSize: "0.9rem", color: "#059669" }}>
+                    Confidence: {pred.confidence}
+                  </p>
+                  <p style={{ margin: "0.1rem 0 0 0", fontSize: "0.8rem", color: "#10b981", fontStyle: "italic" }}>
+                    (Possible condition: {pred.disease})
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
+          <p style={{ color: "#6b7280", marginBottom: "1rem", fontSize: "0.9rem" }}>
+            Redirecting to dashboard...
           </p>
           <div style={{
             width: "40px",

@@ -38,4 +38,22 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# python models (large files)
+python_service/models/*.pkl
+!python_service/models/disease_encoder.pkl
+!python_service/models/symptoms_list.pkl
+# disease_model.pkl is 170MB+, so ignore it.
+
